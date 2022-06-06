@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+
+    implementation 'org.ow2.asm:asm-tree:9.3'
+    implementation 'org.javassist:javassist:3.29.0-GA'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+            'Agent-Class': 'java_agent.AgentMain',
+            'Premain-Class': 'java_agent.AgentMain',
+            'Can-Redefine-Classes': true,
+            'Can-Retransform-Classes': true
+        )
+    }
+}
